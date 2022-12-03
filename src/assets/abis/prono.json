@@ -1,0 +1,48 @@
+[
+    {
+        "inputs": [],
+        "name": "constructor",
+        "outputs": [],
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "name": "id",
+                "type": "felt"
+            },
+            {
+                "name": "home_team",
+                "type": "felt"
+            },
+            {
+                "name": "away_team",
+                "type": "felt"
+            }
+        ],
+        "name": "set_match_teams_by_id",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "id",
+                "type": "felt"
+            }
+        ],
+        "name": "get_match_oponents_by_id",
+        "outputs": [
+            {
+                "name": "home_team",
+                "type": "felt"
+            },
+            {
+                "name": "away_team",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

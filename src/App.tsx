@@ -1,21 +1,63 @@
-import { StarknetProvider } from '@starknet-react/core';
-import { MantineProvider } from '@mantine/core';
-import { getInstalledInjectedConnectors } from '@starknet-react/core';
-import { connect } from '@argent/get-starknet';
+import {
+  InjectedConnector,
+  StarknetConfig,
+  useConnectors,
+} from '@starknet-react/core';
+import { Container, MantineProvider } from '@mantine/core';
+import { StarknetChainId } from 'starknet/constants';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-import YourApp from './components/YourApp';
+import { SequencerProvider } from 'starknet';
+import HomePage from './pages/HomePage';
+
 import './App.css';
+import PageLayout from './components/PageLayout';
 
 function App() {
-  const connectors = getInstalledInjectedConnectors();
+  /*const provider = new SequencerProvider({
+    baseUrl: 'http://localhost:5050',
+    feederGatewayUrl: 'http://localhost:5050',
+    gatewayUrl: 'http://localhost:5050',
+    chainId: StarknetChainId.TESTNET,
+  });*/
+
+  const provider = new SequencerProvider({
+    baseUrl: 'https://goerli-2.voyager.online',
+    feederGatewayUrl: 'https://alpha4-2.starknet.io/feeder_gateway/',
+    gatewayUrl: 'https://alpha4-2.starknet.io/gateway/',
+    chainId: StarknetChainId.TESTNET2,
+  });
+
+  //const provider = new SequencerProvider({ network: 'goerli-alpha-2' });
+
+  const connectors = [
+    new InjectedConnector({ options: { id: 'braavos' } }),
+    new InjectedConnector({ options: { id: 'argentX' } }),
+  ];
 
   return (
-    <StarknetProvider connectors={connectors}>
+    <StarknetConfig connectors={connectors} defaultProvider={provider}>
       <MantineProvider withGlobalStyles withNormalizeCSS>
-        <YourApp />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<PageLayout />}>
+              <Route path="/" element={<HomePage />} />
+            </Route>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
       </MantineProvider>
-    </StarknetProvider>
+    </StarknetConfig>
   );
 }
 
 export default App;
+
+/*
+defaultProvider={{
+  baseUrl: 'http://localhost:5050',
+  feederGatewayUrl: 'http://localhost:5050',
+  gatewayUrl: 'http://localhost:5050',
+  chainId: StarknetChainId.TESTNET,
+}}
+*/

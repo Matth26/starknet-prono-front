@@ -1,17 +1,25 @@
 import { useConnectors } from '@starknet-react/core';
+import { useEffect } from 'react';
+import { Button, Group } from '@mantine/core';
 
 const Connectors = () => {
-  const { connect, connectors } = useConnectors();
+  const { connect, available, refresh } = useConnectors();
+
+  useEffect(() => {
+    const interval = setInterval(refresh, 5000);
+    return () => clearInterval(interval);
+  }, [refresh]);
+
   return (
-    <div>
-      {connectors.map((connector) =>
+    <Group>
+      {available.map((connector) =>
         connector.available() ? (
-          <button key={connector.id()} onClick={() => connect(connector)}>
-            Connect {connector.name()}
-          </button>
+          <Button key={connector.id()} onClick={() => connect(connector)}>
+            {connector.name()}
+          </Button>
         ) : null
       )}
-    </div>
+    </Group>
   );
 };
 
