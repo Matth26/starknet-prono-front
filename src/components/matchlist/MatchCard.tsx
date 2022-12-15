@@ -85,7 +85,7 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
     }
 
     const [HomeTeamScore, setHomeTeamScore] = useState<number | undefined>();
-    const [AwayTeamScore, setAwayTeamScore] = useState<number | undefined>('');
+    const [AwayTeamScore, setAwayTeamScore] = useState<number | undefined>();
     const [HomeTeam, setHomeTeam] = useState<string | ''>('');
     const [AwayTeam, setAwayTeam] = useState<string | ''>('');
     const [dateUtc, setdateUtc] = useState<number>(0);
