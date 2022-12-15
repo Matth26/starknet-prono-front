@@ -138,6 +138,7 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
 
     useEffect(() => {
         console.log("pronoidata    " + pronodata)
+        console.log("prono    " + prono)
         if (pronodata === null && prono) {
             setscoreHasChanged(true)
         }
@@ -151,7 +152,7 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
         }
 
         //setProno()
-    }, [pronodata])
+    }, [pronodata, prono])
 
     for (let key in dict) {
         if (HomeTeam && HomeTeam.replace(' ', '') === key) {
@@ -171,6 +172,7 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
 
         return DateTime.fromSeconds(dateUtc).toLocaleString(
             DateTime.DATETIME_SHORT,
+        );
     };
 
     const displayRound = (matchId: number) => {
@@ -289,9 +291,13 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
                                 if (isNaN(parseInt(e.target.value))) newHTScore = 0;
                                 else newHTScore = parseInt(e.target.value, 10);
                                 if (newATScore === '') newATScore = 0;
-
+                                //                             match_id: number;
+                                // ht_score: number;
+                                // at_score: number;
+                                let bet = { match_id: index, ht_score: newHTScore, at_score: newATScore }
                                 setHomeTeamScore(newHTScore);
                                 setAwayTeamScore(newATScore);
+                                setProno(bet)
                             }}
                         />
                     ) : (
