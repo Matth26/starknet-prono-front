@@ -2,6 +2,7 @@ import {
   AppShell,
   Aside,
   Burger,
+  Button,
   Footer,
   Group,
   Header,
@@ -11,12 +12,13 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Login from './Login';
 
 const PageLayout = () => {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <AppShell
@@ -45,6 +47,14 @@ const PageLayout = () => {
 
             <Group sx={{ width: '100%' }} position="apart">
               <Text>PRONO</Text>
+              <Group>
+                <Button onClick={() => navigate('/')} variant="subtle">
+                  HOME
+                </Button>
+                <Button onClick={() => navigate('/admin')} variant="subtle">
+                  ADMIN
+                </Button>
+              </Group>
               <Login />
             </Group>
           </div>
