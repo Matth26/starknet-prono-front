@@ -11,9 +11,17 @@
 .score {
     background-color: white;
     display: flex;
-    width: 100%;
-    justify-content: space-around;
+    width: 25%;
+    vertical-align: baseline;
+    justify-content: center;
     flex-direction: row;
+    padding: 0 7px 0 7px;
+    position: absolute;
+    top: 50%;
+    margin: 1rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
 }
 
 .match-info {
@@ -47,6 +55,7 @@
 .scorefield .mantine-gqmpge {
     padding: 0.25rem 0.5rem 0.25rem 0.5rem;
     text-align: center;
+    margin-top: .5rem;
 }
 
 .date-in-card {
@@ -63,4 +72,35 @@
 .flag {
     width: 30px;
     height: 40px;
+}
+
+.country {
+    margin: 1rem;
+    display: flex;
+    flex-direction: row;
+}
+
+.country-name {
+    color: black;
+    margin: auto;
+}
+
+.countryend {
+    display: flex;
+    justify-content: end;
+    margin: 1rem;
+    flex-direction: row;
+}
+
+.buttonend {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    vertical-align: center;
+    padding: auto;
+}
+
+.button {
+    margin: auto;
+    height: 36px;
 }

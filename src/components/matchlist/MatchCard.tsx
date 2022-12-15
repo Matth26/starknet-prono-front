@@ -282,6 +282,7 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
                     {type === 'prono' ? (
                         <NumberInput
                             id="outlined-basic"
+                            defaultValue={0}
                             hideControls={true}
                             className="scorefield"
                             value={HomeTeamScore}
@@ -335,34 +336,49 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
                         </div>
                     )}
                 </div>
-
-                <div className="country">
-                    <p className="country-name"> {AwayTeam} </p>
-                    <div style={{ width: '10px' }}></div>
-                    <img
-                        src={AwayTeamFlag}
-                        className={AwayTeamFlag !== undefined ? 'flag' : 'unknown-flag'}
-                    ></img>
-                </div>
                 <div>
-                    <Button
-                        disabled={!scoreHasChanged}
-                        sx={{
-                            color: 'black',
-                            backgroundColor: scoreHasChanged ? '#ffc300' : '#ececec',
-                            marginBottom: '10px',
-                            alignSelf: 'flex-end',
-                            margin: 0,
-                        }}
-                    // onClick={() => {
-                    //     sendTx({ gasLimit: 10000000 });
-                    // }}
-                    >
-                        Save
-                    </Button>
+                    {type === 'result' &&
+                        <div className="countryend">
+                            <p className="country-name"> {AwayTeam} </p>
+                            <div style={{ width: '10px' }}></div>
+                            <img
+                                src={AwayTeamFlag}
+                                className={AwayTeamFlag !== undefined ? 'flag' : 'unknown-flag'}
+                            ></img>
+                        </div>
+                    }
                 </div>
+                {type === 'prono' &&
+                    <div className="buttonend">
+                        <div className="countryend">
+                            <p className="country-name"> {AwayTeam} </p>
+                            <div style={{ width: '10px' }}></div>
+                            <img
+                                src={AwayTeamFlag}
+                                className={AwayTeamFlag !== undefined ? 'flag' : 'unknown-flag'}
+                            ></img>
+                        </div>
+                        <div className="button">
+                            <Button
+                                disabled={!scoreHasChanged}
+                                sx={{
+                                    color: 'black',
+                                    backgroundColor: scoreHasChanged ? '#ffc300' : '#ececec',
+                                    alignSelf: 'flex-end',
+                                }}
+                            // onClick={() => {
+                            //     sendTx({ gasLimit: 10000000 });
+                            // }}
+                            >
+                                Save
+                            </Button>
+                        </div>
+                    </div>
+                }
+
+
             </div>
-        </div>
+        </div >
     )
 }
 
