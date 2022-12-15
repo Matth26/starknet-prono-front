@@ -38,7 +38,7 @@ import ContractAbi from '../../assets/abis/prono.json';
 import { DateTime } from 'luxon';
 import { encodeShortString } from 'starknet/dist/utils/shortString';
 import { feltToString } from '../MatchAdmin';
-import { Button, TextInput } from '@mantine/core';
+import { Button, NumberInput, TextInput } from '@mantine/core';
 import { BETA } from 'starknet/constants';
 
 interface Bet {
@@ -84,8 +84,8 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
         Serbia: { image: Serbia },
     }
 
-    const [HomeTeamScore, setHomeTeamScore] = useState<number | ''>('');
-    const [AwayTeamScore, setAwayTeamScore] = useState<number | ''>('');
+    const [HomeTeamScore, setHomeTeamScore] = useState<number | undefined>();
+    const [AwayTeamScore, setAwayTeamScore] = useState<number | undefined>('');
     const [HomeTeam, setHomeTeam] = useState<string | ''>('');
     const [AwayTeam, setAwayTeam] = useState<string | ''>('');
     const [dateUtc, setdateUtc] = useState<number>(0);
@@ -280,20 +280,17 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
 
                 <div className="score">
                     {type === 'prono' ? (
-                        <TextInput
+                        <NumberInput
                             id="outlined-basic"
+                            hideControls={true}
                             className="scorefield"
-                            //inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                             value={HomeTeamScore}
-                            onChange={(e) => {
+                            onChange={(val) => {
                                 let newHTScore = HomeTeamScore;
                                 let newATScore = AwayTeamScore;
-                                if (isNaN(parseInt(e.target.value))) newHTScore = 0;
-                                else newHTScore = parseInt(e.target.value, 10);
-                                if (newATScore === '') newATScore = 0;
-                                //                             match_id: number;
-                                // ht_score: number;
-                                // at_score: number;
+                                if (!val) newHTScore = 0;
+                                else newHTScore = val;
+                                if (!newATScore) newATScore = 0;
                                 let bet = { match_id: index, ht_score: newHTScore, at_score: newATScore }
                                 setHomeTeamScore(newHTScore);
                                 setAwayTeamScore(newATScore);
@@ -310,17 +307,22 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
                     <p className="middle-score"> - </p>
 
                     {type === 'prono' ? (
-                        <TextInput
+                        <NumberInput
                             id="outlined-basic"
+                            style={{ padding: "auto" }}
+                            defaultValue={0}
+                            hideControls={true}
                             className="scorefield"
                             //inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                             value={AwayTeamScore}
-                            onChange={(e) => {
+                            onChange={(val) => {
                                 let newHTScore = HomeTeamScore;
                                 let newATScore = AwayTeamScore;
-                                if (isNaN(parseInt(e.target.value))) newATScore = 0;
-                                else newATScore = parseInt(e.target.value, 10);
-                                if (newHTScore === '') newHTScore = 0;
+                                if (!val) newHTScore = 0;
+                                else newHTScore = val;
+                                if (!val) newATScore = 0;
+                                else newATScore = val;
+                                if (!newHTScore) newHTScore = 0;
 
                                 setHomeTeamScore(newHTScore);
                                 setAwayTeamScore(newATScore);
