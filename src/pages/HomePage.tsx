@@ -6,7 +6,7 @@ const HomePage = () => {
 
   if (!account) return <div>Please connect</div>;
   return (
-    <MatchList></MatchList>
+    <MatchList type="prono"></MatchList>
   );
 };
 

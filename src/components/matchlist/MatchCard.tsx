@@ -31,16 +31,23 @@ import Portugal from '../../assets/flags/pt.svg'
 import Ghana from '../../assets/flags/gh.svg'
 import Brazil from '../../assets/flags/br.svg'
 import Serbia from '../../assets/flags/rs.svg'
-import React, { useState } from 'react';
-import { useContract, useStarknetCall, useStarknetExecute } from '@starknet-react/core';
+import React, { useEffect, useState } from 'react';
+import { useAccount, useContract, useStarknetCall, useStarknetExecute } from '@starknet-react/core';
 import { Abi } from 'starknet';
 import ContractAbi from '../../assets/abis/prono.json';
 import { DateTime } from 'luxon';
 import { encodeShortString } from 'starknet/dist/utils/shortString';
 import { feltToString } from '../MatchAdmin';
-import { TextInput } from '@mantine/core';
+import { Button, TextInput } from '@mantine/core';
+import { BETA } from 'starknet/constants';
 
-const MatchCard: React.FC<{ index: number }> = ({ index }) => {
+interface Bet {
+    match_id: number;
+    ht_score: number;
+    at_score: number;
+}
+
+const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) => {
 
     const dict: { [id: string]: IFlag } = {
         France: { image: France },
@@ -76,17 +83,28 @@ const MatchCard: React.FC<{ index: number }> = ({ index }) => {
         Brazil: { image: Brazil },
         Serbia: { image: Serbia },
     }
+
+    const [HomeTeamScore, setHomeTeamScore] = useState<number | ''>('');
+    const [AwayTeamScore, setAwayTeamScore] = useState<number | ''>('');
+    const [HomeTeam, setHomeTeam] = useState<string | ''>('');
+    const [AwayTeam, setAwayTeam] = useState<string | ''>('');
+    const [dateUtc, setdateUtc] = useState<number>(0);
+    const [pointForMatch, setPointForMatch] = useState(-1);
+
+    const { address, } = useAccount();
+
+    const [prono, setProno] = useState<Bet | null>(null);
+    const [pronosToSave, setpronosToSave] = useState<Bet | null>(null);
+    const [scoreHasChanged, setscoreHasChanged] = useState<Boolean>(false);
+
     const CONTRACT_ADDRESS =
         '0x2643255c69065c8c33388e825c3ffb568fa7684f9874f9a1d24c3964769fed8';
     let homeTeamFlag;
     let AwayTeamFlag;
-    //code starknet
     const { contract } = useContract({
         abi: ContractAbi as Abi,
         address: CONTRACT_ADDRESS,
     });
-    // const [homeMatchName, setHomeMatchName] = useState('');
-    // const [awayMatchName, setAwayMatchName] = useState('');
 
     const {
         data: matchdata,
@@ -100,11 +118,42 @@ const MatchCard: React.FC<{ index: number }> = ({ index }) => {
         options: { watch: false },
     });
 
-    //(date = m.date, home_team = m.home_team, away_team = m.away_team, is_score_set = m.is_score_set, score_ht = m.score_ht, score_at = m.score_at)
+    const {
+        data: pronodata,
+    } = useStarknetCall({
+        contract,
+        method: 'get_user_bet_by_id',
+        args: [address, index],
+        options: { watch: false },
+    });
+
+    useEffect(() => {
+        if (matchdata) {
+            setHomeTeam(feltToString(matchdata[1]));
+            setAwayTeam(feltToString(matchdata[2]));
+            setdateUtc(matchdata[0].toNumber());
+        }
+
+    }, [matchdata]);
+
+    useEffect(() => {
+        console.log("pronoidata    " + pronodata)
+        if (pronodata === null && prono) {
+            setscoreHasChanged(true)
+        }
+        if (pronodata && prono) {
+            if (pronodata[0] != prono?.ht_score) {
+                setscoreHasChanged(true);
+            }
+            else if (pronodata[1] != prono?.at_score) {
+                setscoreHasChanged(true);
+            }
+        }
+
+        //setProno()
+    }, [pronodata])
 
     for (let key in dict) {
-        let HomeTeam = matchdata && feltToString(matchdata[1])
-        let AwayTeam = matchdata && feltToString(matchdata[2])
         if (HomeTeam && HomeTeam.replace(' ', '') === key) {
             homeTeamFlag = dict[key].image
         }
@@ -113,32 +162,200 @@ const MatchCard: React.FC<{ index: number }> = ({ index }) => {
         }
     }
 
+    const canBet = () => {
+        if (Date.now() >= dateUtc * 1000) return false;
+        return true;
+    };
 
+    const displayDate = () => {
 
-    return (
-        <div className="match-card">
-            <div className='match-info'>
-                <p className='date-in-card'> {matchdata && DateTime.fromSeconds(matchdata[0].toNumber()).toLocaleString(
-                    DateTime.DATETIME_SHORT,
-                )}</p>
-                <p className='date-in-card'> Group Phase</p>
+        return DateTime.fromSeconds(dateUtc).toLocaleString(
+            DateTime.DATETIME_SHORT,
+    };
+
+    const displayRound = (matchId: number) => {
+        if (matchId <= 7) return 'Round of 16';
+        else if (matchId <= 11) return 'Quarter-finals';
+        else if (matchId <= 13) return 'Semi-finals';
+        else if (matchId <= 14) return 'Third place';
+        return 'Final';
+    };
+
+    const displayPoint = () => {
+        if (pointForMatch === -1) return null;
+
+        return (
+            <div
+                style={{
+                    position: 'absolute',
+                    top: '4px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    display: 'flex',
+                    backgroundColor: '#a3ff00',
+                    borderRadius: '30px',
+                    paddingTop: '3px',
+                    paddingLeft: '12px',
+                    paddingRight: '12px',
+                    paddingBottom: '1px',
+                    fontWeight: 'bold',
+                    zIndex: 10,
+                    fontSize: '16px',
+                }}
+            >
+                <span
+                    style={{ marginTop: '0px', marginLeft: '1px', marginRight: '6px' }}
+                >
+                    {pointForMatch}
+                </span>
+                <span>points</span>
             </div>
-            <div className='match-team-and-score'>
-                <img src={homeTeamFlag} className='flag'></img>
-                <div className='score'>
-                    <p className='text-in-card'> {matchdata && feltToString(matchdata[1])}</p>
-                    <TextInput id="outlined-basic" className='scorefield' />
-                    {/* <p className='text-in-card'> 0 </p> */}
-                    <p className='middle-score'> - </p>
-                    {/* <p className='text-in-card'> 0 </p> */}
-                    <TextInput id="outlined-basic" className='scorefield' />
-                    <p className='text-in-card'>  {matchdata && feltToString(matchdata[2])} </p>
+        );
+    };
+    return (
+        // <div className="match-card">
+        //     <div className='match-info'>
+        //         <p className='date-in-card'> {matchdata && DateTime.fromSeconds(matchdata[0].toNumber()).toLocaleString(
+        //             DateTime.DATETIME_SHORT,
+        //         )}</p>
+        //         <p className='date-in-card'> Group Phase</p>
+        //     </div>
+        //     <div className='match-team-and-score'>
+        //         <img src={homeTeamFlag} className='flag'></img>
+        //         <div className='score'>
+        //             <p className='text-in-card'> {matchdata && feltToString(matchdata[1])}</p>
+        //             <TextInput id="outlined-basic" className='scorefield' />
+        //             {/* <p className='text-in-card'> 0 </p> */}
+        //             <p className='middle-score'> - </p>
+        //             {/* <p className='text-in-card'> 0 </p> */}
+        //             <TextInput id="outlined-basic" className='scorefield' />
+        //             <p className='text-in-card'>  {matchdata && feltToString(matchdata[2])} </p>
+        //         </div>
+
+        //         <img src={AwayTeamFlag} className='flag'></img>
+        //     </div>
+
+        //</div>
+        <div
+            style={{
+                margin: '1rem 0 0 0',
+                padding: '0.5rem 0.5rem 0.5rem 0.5rem',
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+            }}
+            className="match-card"
+        >
+            {!canBet() && <div className="locked-bet"></div>}
+            <div className="match-info">
+                <span
+                    style={{
+                        fontSize: '14px',
+                    }}
+                    className="date-in-card"
+                >
+                    {displayDate()}
+                </span>
+                {type === 'result' && <div>{displayPoint()}</div>}
+                <span
+                    style={{
+                        fontSize: '14px',
+                    }}
+                    className="date-in-card"
+                >
+                    {displayRound(index)}
+                </span>
+            </div>
+            <div className="match-team-and-score">
+                <div className="country">
+                    <img
+                        src={homeTeamFlag}
+                        className={homeTeamFlag !== undefined ? 'flag' : 'unknown-flag'}
+                    ></img>
+                    <div style={{ width: '10px' }}></div>
+                    <p className="country-name"> {HomeTeam}</p>
                 </div>
 
-                <img src={AwayTeamFlag} className='flag'></img>
-            </div>
+                <div className="score">
+                    {type === 'prono' ? (
+                        <TextInput
+                            id="outlined-basic"
+                            className="scorefield"
+                            //inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                            value={HomeTeamScore}
+                            onChange={(e) => {
+                                let newHTScore = HomeTeamScore;
+                                let newATScore = AwayTeamScore;
+                                if (isNaN(parseInt(e.target.value))) newHTScore = 0;
+                                else newHTScore = parseInt(e.target.value, 10);
+                                if (newATScore === '') newATScore = 0;
 
-        </div>)
+                                setHomeTeamScore(newHTScore);
+                                setAwayTeamScore(newATScore);
+                            }}
+                        />
+                    ) : (
+                        <div style={{ margin: 'auto', color: 'black' }}>
+                            {HomeTeamScore}
+                        </div>
+                    )}
+
+
+                    <p className="middle-score"> - </p>
+
+                    {type === 'prono' ? (
+                        <TextInput
+                            id="outlined-basic"
+                            className="scorefield"
+                            //inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                            value={AwayTeamScore}
+                            onChange={(e) => {
+                                let newHTScore = HomeTeamScore;
+                                let newATScore = AwayTeamScore;
+                                if (isNaN(parseInt(e.target.value))) newATScore = 0;
+                                else newATScore = parseInt(e.target.value, 10);
+                                if (newHTScore === '') newHTScore = 0;
+
+                                setHomeTeamScore(newHTScore);
+                                setAwayTeamScore(newATScore);
+
+                            }}
+                        />
+                    ) : (
+                        <div style={{ margin: 'auto', color: 'black' }}>
+                            {AwayTeamScore}
+                        </div>
+                    )}
+                </div>
+
+                <div className="country">
+                    <p className="country-name"> {AwayTeam} </p>
+                    <div style={{ width: '10px' }}></div>
+                    <img
+                        src={AwayTeamFlag}
+                        className={AwayTeamFlag !== undefined ? 'flag' : 'unknown-flag'}
+                    ></img>
+                </div>
+                <div>
+                    <Button
+                        disabled={!scoreHasChanged}
+                        sx={{
+                            color: 'black',
+                            backgroundColor: scoreHasChanged ? '#ffc300' : '#ececec',
+                            marginBottom: '10px',
+                            alignSelf: 'flex-end',
+                            margin: 0,
+                        }}
+                    // onClick={() => {
+                    //     sendTx({ gasLimit: 10000000 });
+                    // }}
+                    >
+                        Save
+                    </Button>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export default MatchCard;

@@ -13,6 +13,7 @@ import HomePage from './pages/HomePage';
 import './App.css';
 import PageLayout from './components/PageLayout';
 import AdminPage from './pages/AdminPage';
+import ResultPage from './pages/ResultPage';
 
 function App() {
   /*const provider = new SequencerProvider({
@@ -43,6 +44,7 @@ function App() {
           <Routes>
             <Route path="/" element={<PageLayout />}>
               <Route path="/" element={<HomePage />} />
+              <Route path="/result" element={<ResultPage />} />
               <Route path="/admin" element={<AdminPage />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
