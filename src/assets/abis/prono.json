@@ -1,11 +1,18 @@
 [
     {
-        "inputs": [],
         "name": "constructor",
-        "outputs": [],
-        "type": "constructor"
+        "type": "constructor",
+        "inputs": [
+            {
+                "name": "owner_address",
+                "type": "felt"
+            }
+        ],
+        "outputs": []
     },
     {
+        "name": "set_match_teams_by_id",
+        "type": "function",
         "inputs": [
             {
                 "name": "id",
@@ -20,18 +27,101 @@
                 "type": "felt"
             }
         ],
-        "name": "set_match_teams_by_id",
-        "outputs": [],
-        "type": "function"
+        "outputs": []
     },
     {
+        "name": "set_match_date_by_id",
+        "type": "function",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "felt"
+            },
+            {
+                "name": "date",
+                "type": "felt"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "name": "set_match_result_by_id",
+        "type": "function",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "felt"
+            },
+            {
+                "name": "score_ht",
+                "type": "felt"
+            },
+            {
+                "name": "score_at",
+                "type": "felt"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "name": "set_match_data_by_id",
+        "type": "function",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "felt"
+            },
+            {
+                "name": "date",
+                "type": "felt"
+            },
+            {
+                "name": "home_team",
+                "type": "felt"
+            },
+            {
+                "name": "away_team",
+                "type": "felt"
+            },
+            {
+                "name": "score_ht",
+                "type": "felt"
+            },
+            {
+                "name": "score_at",
+                "type": "felt"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "name": "set_match_bet_by_id",
+        "type": "function",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "felt"
+            },
+            {
+                "name": "home_team",
+                "type": "felt"
+            },
+            {
+                "name": "away_team",
+                "type": "felt"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "name": "get_match_oponents_by_id",
+        "type": "function",
         "inputs": [
             {
                 "name": "id",
                 "type": "felt"
             }
         ],
-        "name": "get_match_oponents_by_id",
         "outputs": [
             {
                 "name": "home_team",
@@ -42,7 +132,72 @@
                 "type": "felt"
             }
         ],
-        "stateMutability": "view",
-        "type": "function"
+        "stateMutability": "view"
+    },
+    {
+        "name": "get_match_date_by_id",
+        "type": "function",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "felt"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "date",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "name": "get_match_data_by_id",
+        "type": "function",
+        "inputs": [
+            {
+                "name": "id",
+                "type": "felt"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "date",
+                "type": "felt"
+            },
+            {
+                "name": "home_team",
+                "type": "felt"
+            },
+            {
+                "name": "away_team",
+                "type": "felt"
+            },
+            {
+                "name": "is_score_set",
+                "type": "felt"
+            },
+            {
+                "name": "score_ht",
+                "type": "felt"
+            },
+            {
+                "name": "score_at",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "name": "get_users_len",
+        "type": "function",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "len",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view"
     }
 ]

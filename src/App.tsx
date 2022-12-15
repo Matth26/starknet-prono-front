@@ -4,7 +4,7 @@ import {
   useConnectors,
 } from '@starknet-react/core';
 import { Container, MantineProvider } from '@mantine/core';
-import { StarknetChainId } from 'starknet/constants';
+import { StarknetChainId } from 'starknet/src/constants';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { SequencerProvider } from 'starknet';

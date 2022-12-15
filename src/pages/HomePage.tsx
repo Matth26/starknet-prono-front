@@ -1,11 +1,14 @@
 import { useAccount } from '@starknet-react/core';
+import MatchList from '../components/matchlist/MatchList';
 
 const HomePage = () => {
   const { account } = useAccount();
 
   if (!account) return <div>Please connect</div>;
-
-  return <div>Home</div>;
+  return (
+    <MatchList></MatchList>
+  );
 };
+
 
 export default HomePage;

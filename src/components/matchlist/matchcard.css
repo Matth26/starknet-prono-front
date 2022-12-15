@@ -1,0 +1,66 @@
+.match-team-and-score {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 0 0;
+    padding: 0 5px 0 5px !important;
+}
+
+.score {
+    background-color: white;
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+.match-info {
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 0 5px;
+    height: 1.5rem;
+}
+
+.match-card {
+    background-color: white;
+    border-radius: 5px;
+    margin: 1rem 0 1rem 0;
+    padding: 0.1rem;
+}
+
+.text-in-card {
+    color: black;
+    width: 38%;
+    margin: auto;
+}
+
+.scorefield {
+    width: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.scorefield .MuiOutlinedInput-input {
+    padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+    text-align: center;
+}
+
+.date-in-card {
+    margin: 1px;
+    color: gray;
+    text-align: end;
+}
+
+.middle-score {
+    padding: 0 7px 0 7px;
+    color: black;
+}
+
+.flag {
+    width: 30px;
+    height: 40px;
+}
