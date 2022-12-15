@@ -22,11 +22,9 @@ const AdminPage = () => {
 
   return (
     <div>
-      {[15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map(
-        (i: number) => (
-          <MatchAdmin index={i} />
-        )
-      )}
+      {[...Array(16).keys()].reverse().map((i: number) => (
+        <MatchAdmin index={i} />
+      ))}
     </div>
   );
 };
