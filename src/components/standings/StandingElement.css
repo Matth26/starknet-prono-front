@@ -1,0 +1,23 @@
+.classement {
+    border-radius: 1rem;
+    width: 2rem;
+    height: 2rem;
+    background-color: rgb(217, 170, 77);
+    text-align: center;
+    padding-top: 0.25rem;
+}
+
+.medal {
+    width: 2rem;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 2rem;
+}
+
+.identifier {
+    text-align: start;
+    margin-right: auto;
+    margin-left: 1rem;
+    margin-top: auto;
+    margin-bottom: auto;
+}

@@ -1,5 +1,27 @@
 [
     {
+        "name": "Bet",
+        "size": 3,
+        "type": "struct",
+        "members": [
+            {
+                "name": "has_been_bet",
+                "type": "felt",
+                "offset": 0
+            },
+            {
+                "name": "score_ht",
+                "type": "felt",
+                "offset": 1
+            },
+            {
+                "name": "score_at",
+                "type": "felt",
+                "offset": 2
+            }
+        ]
+    },
+    {
         "name": "constructor",
         "type": "constructor",
         "inputs": [
@@ -195,6 +217,65 @@
         "outputs": [
             {
                 "name": "len",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "name": "get_user_bet_by_id",
+        "type": "function",
+        "inputs": [
+            {
+                "name": "user_address",
+                "type": "felt"
+            },
+            {
+                "name": "id",
+                "type": "felt"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "bet",
+                "type": "Bet"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "name": "get_user_points_by_id",
+        "type": "function",
+        "inputs": [
+            {
+                "name": "user_address",
+                "type": "felt"
+            },
+            {
+                "name": "id",
+                "type": "felt"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "points",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "name": "get_user_points",
+        "type": "function",
+        "inputs": [
+            {
+                "name": "user_address",
+                "type": "felt"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "points",
                 "type": "felt"
             }
         ],

@@ -14,6 +14,7 @@ import './App.css';
 import PageLayout from './components/PageLayout';
 import AdminPage from './pages/AdminPage';
 import ResultPage from './pages/ResultPage';
+import StandingPage from './pages/StandingPage';
 
 function App() {
   /*const provider = new SequencerProvider({
@@ -44,6 +45,7 @@ function App() {
           <Routes>
             <Route path="/" element={<PageLayout />}>
               <Route path="/" element={<HomePage />} />
+              <Route path="/standings" element={<StandingPage />} />
               <Route path="/result" element={<ResultPage />} />
               <Route path="/admin" element={<AdminPage />} />
             </Route>

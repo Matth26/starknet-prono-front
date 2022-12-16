@@ -54,6 +54,9 @@ const PageLayout = () => {
                 <Button onClick={() => navigate('/result')} variant="subtle">
                   Result
                 </Button>
+                <Button onClick={() => navigate('/standings')} variant="subtle">
+                  Standings
+                </Button>
                 <Button onClick={() => navigate('/admin')} variant="subtle">
                   ADMIN
                 </Button>

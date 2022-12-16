@@ -33,13 +33,14 @@ import Brazil from '../../assets/flags/br.svg'
 import Serbia from '../../assets/flags/rs.svg'
 import React, { useEffect, useState } from 'react';
 import { useAccount, useContract, useStarknetCall, useStarknetExecute } from '@starknet-react/core';
-import { Abi } from 'starknet';
+import { Abi, validateAndParseAddress } from 'starknet';
 import ContractAbi from '../../assets/abis/prono.json';
 import { DateTime } from 'luxon';
 import { encodeShortString } from 'starknet/dist/utils/shortString';
 import { feltToString } from '../MatchAdmin';
 import { Button, NumberInput, TextInput } from '@mantine/core';
 import { BETA } from 'starknet/constants';
+import BN from 'bn.js';
 
 interface Bet {
     match_id: number;
@@ -98,7 +99,7 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
     const [scoreHasChanged, setscoreHasChanged] = useState<Boolean>(false);
 
     const CONTRACT_ADDRESS =
-        '0x2643255c69065c8c33388e825c3ffb568fa7684f9874f9a1d24c3964769fed8';
+        '0x52054d097681867ef390a916a32d94b5b0b43e04211b6cb82e1f29210de40fc';
     let homeTeamFlag;
     let AwayTeamFlag;
     const { contract } = useContract({
@@ -118,14 +119,20 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
         options: { watch: false },
     });
 
+    // if (address === undefined) {
+    //     return null;
+
+    // }
+
     const {
         data: pronodata,
     } = useStarknetCall({
         contract,
         method: 'get_user_bet_by_id',
-        args: [address, index],
+        args: [address ? new BN(address) : 0, index],
         options: { watch: false },
     });
+
 
     useEffect(() => {
         if (matchdata) {
@@ -137,8 +144,6 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
     }, [matchdata]);
 
     useEffect(() => {
-        console.log("pronoidata    " + pronodata)
-        console.log("prono    " + prono)
         if (pronodata === null && prono) {
             setscoreHasChanged(true)
         }
@@ -154,6 +159,21 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
         //setProno()
     }, [pronodata, prono])
 
+    useEffect(() => {
+        if (pronodata && pronodata[0] && pronodata[1] && pronodata[2]) {
+            let hasbeenbet = pronodata[0] as BN;
+            if (hasbeenbet) {
+                let ht_score = pronodata[1] as BN
+                let at_score = pronodata[2] as BN
+                console.log(ht_score)
+                console.log(at_score)
+                setProno({ match_id: index, ht_score: ht_score.toNumber(), at_score: at_score.toNumber() })
+            }
+        }
+        console.log("prono    " + prono + "index:" + index)
+
+    }, [pronodata])
+
     for (let key in dict) {
         if (HomeTeam && HomeTeam.replace(' ', '') === key) {
             homeTeamFlag = dict[key].image
@@ -168,6 +188,21 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
         return true;
     };
 
+    const {
+        execute: executeSetMatchBetById,
+    } = useStarknetExecute({
+        calls: [
+            {
+                contractAddress: CONTRACT_ADDRESS,
+                entrypoint: 'set_match_bet_by_id',
+                calldata: [
+                    index,
+                    HomeTeamScore,
+                    AwayTeamScore,
+                ],
+            },
+        ],
+    });
     const displayDate = () => {
 
         return DateTime.fromSeconds(dateUtc).toLocaleString(
@@ -215,29 +250,6 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
         );
     };
     return (
-        // <div className="match-card">
-        //     <div className='match-info'>
-        //         <p className='date-in-card'> {matchdata && DateTime.fromSeconds(matchdata[0].toNumber()).toLocaleString(
-        //             DateTime.DATETIME_SHORT,
-        //         )}</p>
-        //         <p className='date-in-card'> Group Phase</p>
-        //     </div>
-        //     <div className='match-team-and-score'>
-        //         <img src={homeTeamFlag} className='flag'></img>
-        //         <div className='score'>
-        //             <p className='text-in-card'> {matchdata && feltToString(matchdata[1])}</p>
-        //             <TextInput id="outlined-basic" className='scorefield' />
-        //             {/* <p className='text-in-card'> 0 </p> */}
-        //             <p className='middle-score'> - </p>
-        //             {/* <p className='text-in-card'> 0 </p> */}
-        //             <TextInput id="outlined-basic" className='scorefield' />
-        //             <p className='text-in-card'>  {matchdata && feltToString(matchdata[2])} </p>
-        //         </div>
-
-        //         <img src={AwayTeamFlag} className='flag'></img>
-        //     </div>
-
-        //</div>
         <div
             style={{
                 margin: '1rem 0 0 0',
@@ -366,9 +378,9 @@ const MatchCard: React.FC<{ index: number, type: string }> = ({ index, type }) =
                                     backgroundColor: scoreHasChanged ? '#ffc300' : '#ececec',
                                     alignSelf: 'flex-end',
                                 }}
-                            // onClick={() => {
-                            //     sendTx({ gasLimit: 10000000 });
-                            // }}
+                                onClick={() => {
+                                    executeSetMatchBetById()
+                                }}
                             >
                                 Save
                             </Button>
