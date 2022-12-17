@@ -46,6 +46,7 @@ import { feltToString } from '../MatchAdmin';
 import { Button, NumberInput, TextInput } from '@mantine/core';
 import { BETA } from 'starknet/constants';
 import BN from 'bn.js';
+import { CONTRACT_ADDRESS } from '../../app/globals';
 
 interface Bet {
   match_id: number;
@@ -105,8 +106,6 @@ const MatchCard: React.FC<{ index: number; type: string }> = ({
   const [pronosToSave, setpronosToSave] = useState<Bet | null>(null);
   const [scoreHasChanged, setscoreHasChanged] = useState<Boolean>(false);
 
-  const CONTRACT_ADDRESS =
-    '0x9ba54b058d4613022f97f08755eb171b90a338a36d152e4ee53e599524687f';
   let homeTeamFlag;
   let AwayTeamFlag;
   const { contract } = useContract({

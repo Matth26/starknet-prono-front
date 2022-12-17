@@ -1,284 +1,429 @@
 [
-    {
-        "name": "Bet",
-        "size": 3,
-        "type": "struct",
-        "members": [
-            {
-                "name": "has_been_bet",
-                "type": "felt",
-                "offset": 0
-            },
-            {
-                "name": "score_ht",
-                "type": "felt",
-                "offset": 1
-            },
-            {
-                "name": "score_at",
-                "type": "felt",
-                "offset": 2
-            }
-        ]
-    },
-    {
-        "name": "constructor",
-        "type": "constructor",
-        "inputs": [
-            {
-                "name": "owner_address",
-                "type": "felt"
-            }
-        ],
-        "outputs": []
-    },
-    {
-        "name": "set_match_teams_by_id",
-        "type": "function",
-        "inputs": [
-            {
-                "name": "id",
-                "type": "felt"
-            },
-            {
-                "name": "home_team",
-                "type": "felt"
-            },
-            {
-                "name": "away_team",
-                "type": "felt"
-            }
-        ],
-        "outputs": []
-    },
-    {
-        "name": "set_match_date_by_id",
-        "type": "function",
-        "inputs": [
-            {
-                "name": "id",
-                "type": "felt"
-            },
-            {
-                "name": "date",
-                "type": "felt"
-            }
-        ],
-        "outputs": []
-    },
-    {
-        "name": "set_match_result_by_id",
-        "type": "function",
-        "inputs": [
-            {
-                "name": "id",
-                "type": "felt"
-            },
-            {
-                "name": "score_ht",
-                "type": "felt"
-            },
-            {
-                "name": "score_at",
-                "type": "felt"
-            }
-        ],
-        "outputs": []
-    },
-    {
-        "name": "set_match_data_by_id",
-        "type": "function",
-        "inputs": [
-            {
-                "name": "id",
-                "type": "felt"
-            },
-            {
-                "name": "date",
-                "type": "felt"
-            },
-            {
-                "name": "home_team",
-                "type": "felt"
-            },
-            {
-                "name": "away_team",
-                "type": "felt"
-            },
-            {
-                "name": "score_ht",
-                "type": "felt"
-            },
-            {
-                "name": "score_at",
-                "type": "felt"
-            }
-        ],
-        "outputs": []
-    },
-    {
-        "name": "set_match_bet_by_id",
-        "type": "function",
-        "inputs": [
-            {
-                "name": "id",
-                "type": "felt"
-            },
-            {
-                "name": "home_team",
-                "type": "felt"
-            },
-            {
-                "name": "away_team",
-                "type": "felt"
-            }
-        ],
-        "outputs": []
-    },
-    {
-        "name": "get_match_oponents_by_id",
-        "type": "function",
-        "inputs": [
-            {
-                "name": "id",
-                "type": "felt"
-            }
-        ],
-        "outputs": [
-            {
-                "name": "home_team",
-                "type": "felt"
-            },
-            {
-                "name": "away_team",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view"
-    },
-    {
-        "name": "get_match_date_by_id",
-        "type": "function",
-        "inputs": [
-            {
-                "name": "id",
-                "type": "felt"
-            }
-        ],
-        "outputs": [
-            {
-                "name": "date",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view"
-    },
-    {
-        "name": "get_match_data_by_id",
-        "type": "function",
-        "inputs": [
-            {
-                "name": "id",
-                "type": "felt"
-            }
-        ],
-        "outputs": [
-            {
-                "name": "date",
-                "type": "felt"
-            },
-            {
-                "name": "home_team",
-                "type": "felt"
-            },
-            {
-                "name": "away_team",
-                "type": "felt"
-            },
-            {
-                "name": "is_score_set",
-                "type": "felt"
-            },
-            {
-                "name": "score_ht",
-                "type": "felt"
-            },
-            {
-                "name": "score_at",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view"
-    },
-    {
-        "name": "get_users_len",
-        "type": "function",
-        "inputs": [],
-        "outputs": [
-            {
-                "name": "len",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view"
-    },
-    {
-        "name": "get_user_bet_by_id",
-        "type": "function",
-        "inputs": [
-            {
-                "name": "user_address",
-                "type": "felt"
-            },
-            {
-                "name": "id",
-                "type": "felt"
-            }
-        ],
-        "outputs": [
-            {
-                "name": "bet",
-                "type": "Bet"
-            }
-        ],
-        "stateMutability": "view"
-    },
-    {
-        "name": "get_user_points_by_id",
-        "type": "function",
-        "inputs": [
-            {
-                "name": "user_address",
-                "type": "felt"
-            },
-            {
-                "name": "id",
-                "type": "felt"
-            }
-        ],
-        "outputs": [
-            {
-                "name": "points",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view"
-    },
-    {
-        "name": "get_user_points",
-        "type": "function",
-        "inputs": [
-            {
-                "name": "user_address",
-                "type": "felt"
-            }
-        ],
-        "outputs": [
-            {
-                "name": "points",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view"
-    }
+  {
+    "members": [
+      {
+        "name": "home_team",
+        "offset": 0,
+        "type": "felt"
+      },
+      {
+        "name": "away_team",
+        "offset": 1,
+        "type": "felt"
+      },
+      {
+        "name": "date",
+        "offset": 2,
+        "type": "felt"
+      },
+      {
+        "name": "is_score_set",
+        "offset": 3,
+        "type": "felt"
+      },
+      {
+        "name": "score_ht",
+        "offset": 4,
+        "type": "felt"
+      },
+      {
+        "name": "score_at",
+        "offset": 5,
+        "type": "felt"
+      }
+    ],
+    "name": "Match",
+    "size": 6,
+    "type": "struct"
+  },
+  {
+    "members": [
+      {
+        "name": "has_been_bet",
+        "offset": 0,
+        "type": "felt"
+      },
+      {
+        "name": "score_ht",
+        "offset": 1,
+        "type": "felt"
+      },
+      {
+        "name": "score_at",
+        "offset": 2,
+        "type": "felt"
+      }
+    ],
+    "name": "Bet",
+    "size": 3,
+    "type": "struct"
+  },
+  {
+    "members": [
+      {
+        "name": "match_id",
+        "offset": 0,
+        "type": "felt"
+      },
+      {
+        "name": "points",
+        "offset": 1,
+        "type": "felt"
+      }
+    ],
+    "name": "Points",
+    "size": 2,
+    "type": "struct"
+  },
+  {
+    "members": [
+      {
+        "name": "address",
+        "offset": 0,
+        "type": "felt"
+      },
+      {
+        "name": "points",
+        "offset": 1,
+        "type": "felt"
+      }
+    ],
+    "name": "Score",
+    "size": 2,
+    "type": "struct"
+  },
+  {
+    "inputs": [
+      {
+        "name": "owner_address",
+        "type": "felt"
+      }
+    ],
+    "name": "constructor",
+    "outputs": [],
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "name": "id",
+        "type": "felt"
+      },
+      {
+        "name": "home_team",
+        "type": "felt"
+      },
+      {
+        "name": "away_team",
+        "type": "felt"
+      }
+    ],
+    "name": "set_match_teams_by_id",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "id",
+        "type": "felt"
+      },
+      {
+        "name": "date",
+        "type": "felt"
+      }
+    ],
+    "name": "set_match_date_by_id",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "id",
+        "type": "felt"
+      },
+      {
+        "name": "score_ht",
+        "type": "felt"
+      },
+      {
+        "name": "score_at",
+        "type": "felt"
+      }
+    ],
+    "name": "set_match_result_by_id",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "id",
+        "type": "felt"
+      },
+      {
+        "name": "date",
+        "type": "felt"
+      },
+      {
+        "name": "home_team",
+        "type": "felt"
+      },
+      {
+        "name": "away_team",
+        "type": "felt"
+      },
+      {
+        "name": "score_ht",
+        "type": "felt"
+      },
+      {
+        "name": "score_at",
+        "type": "felt"
+      }
+    ],
+    "name": "set_match_data_by_id",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "id",
+        "type": "felt"
+      },
+      {
+        "name": "home_team",
+        "type": "felt"
+      },
+      {
+        "name": "away_team",
+        "type": "felt"
+      }
+    ],
+    "name": "set_match_bet_by_id",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "id",
+        "type": "felt"
+      }
+    ],
+    "name": "get_match_oponents_by_id",
+    "outputs": [
+      {
+        "name": "home_team",
+        "type": "felt"
+      },
+      {
+        "name": "away_team",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "id",
+        "type": "felt"
+      }
+    ],
+    "name": "get_match_date_by_id",
+    "outputs": [
+      {
+        "name": "date",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "id",
+        "type": "felt"
+      }
+    ],
+    "name": "get_match_data_by_id",
+    "outputs": [
+      {
+        "name": "date",
+        "type": "felt"
+      },
+      {
+        "name": "home_team",
+        "type": "felt"
+      },
+      {
+        "name": "away_team",
+        "type": "felt"
+      },
+      {
+        "name": "is_score_set",
+        "type": "felt"
+      },
+      {
+        "name": "score_ht",
+        "type": "felt"
+      },
+      {
+        "name": "score_at",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "get_matches_data",
+    "outputs": [
+      {
+        "name": "matches_len",
+        "type": "felt"
+      },
+      {
+        "name": "matches",
+        "type": "Match*"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "get_users_len",
+    "outputs": [
+      {
+        "name": "len",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "user_address",
+        "type": "felt"
+      },
+      {
+        "name": "id",
+        "type": "felt"
+      }
+    ],
+    "name": "get_user_bet_by_id",
+    "outputs": [
+      {
+        "name": "bet",
+        "type": "Bet"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "user_address",
+        "type": "felt"
+      }
+    ],
+    "name": "get_user_bets",
+    "outputs": [
+      {
+        "name": "bets_len",
+        "type": "felt"
+      },
+      {
+        "name": "bets",
+        "type": "Bet*"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "user_address",
+        "type": "felt"
+      },
+      {
+        "name": "id",
+        "type": "felt"
+      }
+    ],
+    "name": "get_user_points_by_id",
+    "outputs": [
+      {
+        "name": "points",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "user_address",
+        "type": "felt"
+      }
+    ],
+    "name": "get_user_points",
+    "outputs": [
+      {
+        "name": "points",
+        "type": "felt"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "user_address",
+        "type": "felt"
+      }
+    ],
+    "name": "get_user_points_for_each_bet",
+    "outputs": [
+      {
+        "name": "points_len",
+        "type": "felt"
+      },
+      {
+        "name": "points",
+        "type": "Points*"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "get_scoreboard",
+    "outputs": [
+      {
+        "name": "scores_len",
+        "type": "felt"
+      },
+      {
+        "name": "scores",
+        "type": "Score*"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
 ]

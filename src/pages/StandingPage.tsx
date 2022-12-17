@@ -5,6 +5,7 @@ import ContractAbi from '../assets/abis/prono.json';
 import { useAccount, useContract, useStarknetCall } from '@starknet-react/core';
 import { Abi } from 'starknet';
 import { Group } from '@mantine/core';
+import { CONTRACT_ADDRESS } from '../app/globals';
 
 const StandingPage = () => {
   const { address } = useAccount();
@@ -21,8 +22,6 @@ const StandingPage = () => {
 
   const [score, setScore] = useState<any[]>([]);
 
-  const CONTRACT_ADDRESS =
-    '0x9ba54b058d4613022f97f08755eb171b90a338a36d152e4ee53e599524687f';
   const { contract } = useContract({
     abi: ContractAbi as Abi,
     address: CONTRACT_ADDRESS,
