@@ -11,6 +11,7 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
+import { ScrollArea } from '@mantine/core';
 import { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import Login from './Login';
@@ -64,7 +65,9 @@ const PageLayout = () => {
         </Header>
       }
     >
-      <Outlet />
+      <ScrollArea style={{ height: '90vh' }} type="auto" offsetScrollbars>
+        <Outlet />
+      </ScrollArea>
     </AppShell>
   );
 };

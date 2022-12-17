@@ -6,6 +6,7 @@ import { getUserProno } from '../features/prono/pronoSlice';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 import { getScoreBoard } from '../features/scoreboard/scoreBoardSlice';
 import { getPoints } from '../features/point/pointSlice';
+import { ScrollArea } from '@mantine/core';
 
 const HomePage = () => {
   const dispatch = useAppDispatch();
@@ -26,12 +27,7 @@ const HomePage = () => {
   const { pronos, pronoStatus } = useAppSelector((state) => state.prono);
 
   useEffect(() => {
-    if (pronoStatus === 'idle' && address)
-      dispatch(
-        getUserProno(
-          '0x30254f3ad7fd02550e0ab23c3515be3d3c8f95e6973022e1e8f036f9179fb08'
-        )
-      );
+    if (pronoStatus === 'idle' && address) dispatch(getUserProno(address));
   }, [dispatch, pronoStatus, address]);
 
   /*useEffect(() => {

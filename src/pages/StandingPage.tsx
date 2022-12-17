@@ -31,6 +31,7 @@ const StandingPage = () => {
       {scores &&
         rankDuplicate(scores).map((score, i) => (
           <StandingElement
+            key={score.address}
             address={score.address}
             points={score.points}
             classement={score.classement}

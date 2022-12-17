@@ -1,106 +1,122 @@
 .match-team-and-score {
-    background-color: white;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 0 0 0;
-    padding: 0 5px 0 5px !important;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 0 0;
+  padding: 0 5px 0 5px !important;
 }
 
 .score {
-    background-color: white;
-    display: flex;
-    width: 25%;
-    vertical-align: baseline;
-    justify-content: center;
-    flex-direction: row;
-    padding: 0 7px 0 7px;
-    position: absolute;
-    top: 50%;
-    margin: 1rem;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: black;
+  background-color: white;
+  display: flex;
+  width: 25%;
+  vertical-align: baseline;
+  justify-content: center;
+  flex-direction: row;
+  padding: 0 7px 0 7px;
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
 }
 
 .match-info {
-    background-color: white;
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    padding: 0 5px;
-    height: 1.5rem;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  padding: 5px 5px;
+  height: 1.5rem;
 }
 
 .match-card {
-    background-color: white;
-    border-radius: 5px;
-    margin: 1rem 0 1rem 0;
-    padding: 0.1rem;
+  background-color: white;
+  border-radius: 5px;
+  margin: 1rem 0 0rem 0;
+  padding: 0.1rem;
 }
 
 .text-in-card {
-    color: black;
-    width: 38%;
-    margin: auto;
+  color: black;
+  width: 38%;
+  margin: auto;
 }
 
 .scorefield {
-    width: 2.3rem;
-    display: flex;
-    justify-content: center;
+  width: 2.3rem;
+  display: flex;
+  justify-content: center;
 }
 
 .scorefield .mantine-gqmpge {
-    padding: 0.25rem 0.5rem 0.25rem 0.5rem;
-    text-align: center;
-    margin-top: .5rem;
+  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+  text-align: center;
+  margin-top: 0.5rem;
 }
 
 .date-in-card {
-    margin: 1px;
-    color: gray;
-    text-align: end;
+  margin: 1px;
+  color: gray;
+  text-align: end;
 }
 
 .middle-score {
-    padding: 0 7px 0 7px;
-    color: black;
+  padding: 0 7px 0 7px;
+  color: black;
 }
 
 .flag {
-    width: 30px;
-    height: 40px;
+  width: 30px;
+  height: 40px;
 }
 
 .country {
-    margin: 1rem;
-    display: flex;
-    flex-direction: row;
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: row;
 }
 
 .country-name {
-    color: black;
-    margin: auto;
+  color: black;
+  margin: auto;
 }
 
 .countryend {
-    display: flex;
-    justify-content: end;
-    margin: 1rem;
-    flex-direction: row;
+  display: flex;
+  justify-content: end;
+  margin: 1rem;
+  flex-direction: row;
 }
 
 .buttonend {
-    display: flex;
-    flex-direction: row;
-    justify-content: end;
-    vertical-align: center;
-    padding: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  vertical-align: center;
+  padding: auto;
 }
 
 .button {
-    margin: auto;
-    height: 36px;
+  margin: auto;
+  height: 36px;
+}
+
+.locked-bet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 100%;
+  height: 100%;
+
+  border-radius: 4px;
+
+  background-color: rgb(0, 0, 0, 0.45) !important;
+  color: rgba(255, 255, 255, 1) !important;
+
+  z-index: 10;
 }

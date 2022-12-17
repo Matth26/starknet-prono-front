@@ -19,13 +19,15 @@ const StandingElement = ({
   return (
     <Group
       sx={{
-        margin: '1rem 0 1rem 0',
-        padding: '0.5rem 1rem 0.5rem 1rem',
+        margin: '0',
+        padding: '0.1rem 0.5rem',
         position: 'relative',
         display: 'flex',
         flexDirection: 'row',
+        backgroundColor: 'white',
+        borderRadius: '5px',
+        fontSize: '15px',
       }}
-      className="match-card"
     >
       {classement == 1 && <img className="medal" src={goldmedal}></img>}
       {classement == 2 && <img className="medal" src={silvermedal}></img>}

@@ -156,7 +156,7 @@ const MatchCard: React.FC<MatchInfoProp> = ({
           left: '50%',
           transform: 'translateX(-50%)',
           display: 'flex',
-          backgroundColor: '#a3ff00',
+          backgroundColor: '#99E9F2',
           borderRadius: '30px',
           paddingTop: '3px',
           paddingLeft: '12px',
@@ -233,11 +233,11 @@ const MatchCard: React.FC<MatchInfoProp> = ({
   }
 
   const displayRound = (matchId: number) => {
-    if (matchId <= 7) return 'Round of 16';
-    else if (matchId <= 11) return 'Quarter-finals';
-    else if (matchId <= 13) return 'Semi-finals';
-    else if (matchId <= 14) return 'Third place';
-    return 'Final';
+    if (matchId === 0) return 'Final';
+    else if (matchId === 1) return 'Third place';
+    else if (matchId <= 3) return 'Semi-finals';
+    else if (matchId <= 7) return 'Quarter-finals';
+    return 'Round of 16';
   };
 
   const displayDate = () => {
@@ -247,8 +247,6 @@ const MatchCard: React.FC<MatchInfoProp> = ({
   };
 
   const canBet = () => {
-    //console.log(Date.now());
-    //console.log(dateUtc);
     if (Date.now() >= dateUtc * 1000) return false;
     return true;
   };
@@ -266,7 +264,7 @@ const MatchCard: React.FC<MatchInfoProp> = ({
       }}
       className="match-card"
     >
-      {!canBet() && <Box className="locked-bet"></Box>}
+      {!canBet() && type === 'prono' && <Box className="locked-bet"></Box>}
       <div className="match-info">
         <Text
           sx={{

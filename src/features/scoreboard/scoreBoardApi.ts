@@ -18,10 +18,21 @@ const fetchScoreBoard = async (): Promise<ScoreBoardApi> => {
   const sc = createSC();
   try {
     const ret = await sc.call('get_scoreboard');
-    return ret.scores.map((s: any) => ({
+    let r = ret.scores.map((s: any) => ({
       address: '0x' + (s.address as BN).toString(16),
       points: (s.points as BN).toNumber(),
     }));
+    return [
+      { ...r[0], points: 5 },
+      { ...r[0], points: 3 },
+      { ...r[0], points: 1 },
+      { ...r[0], points: 5 },
+      r[0],
+      r[0],
+      r[0],
+      r[0],
+      r[0],
+    ];
   } catch (error) {
     console.log(error);
   }

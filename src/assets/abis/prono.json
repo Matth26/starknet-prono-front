@@ -2,6 +2,28 @@
   {
     "members": [
       {
+        "name": "match_id",
+        "offset": 0,
+        "type": "felt"
+      },
+      {
+        "name": "score_ht",
+        "offset": 1,
+        "type": "felt"
+      },
+      {
+        "name": "score_at",
+        "offset": 2,
+        "type": "felt"
+      }
+    ],
+    "name": "FromFrontBet",
+    "size": 3,
+    "type": "struct"
+  },
+  {
+    "members": [
+      {
         "name": "home_team",
         "offset": 0,
         "type": "felt"
@@ -190,19 +212,26 @@
   {
     "inputs": [
       {
-        "name": "id",
-        "type": "felt"
-      },
-      {
-        "name": "home_team",
-        "type": "felt"
-      },
-      {
-        "name": "away_team",
-        "type": "felt"
+        "name": "b",
+        "type": "FromFrontBet"
       }
     ],
     "name": "set_match_bet_by_id",
+    "outputs": [],
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "name": "bets_len",
+        "type": "felt"
+      },
+      {
+        "name": "bets",
+        "type": "FromFrontBet*"
+      }
+    ],
+    "name": "set_match_bets",
     "outputs": [],
     "type": "function"
   },
