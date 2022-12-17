@@ -3,9 +3,8 @@ import {
   useStarknetCall,
   useStarknetExecute,
 } from '@starknet-react/core';
-import { encodeShortString } from 'starknet/src/utils/shortString';
 import ContractAbi from '../assets/abis/prono.json';
-import { Abi } from 'starknet';
+import { Abi, shortString } from 'starknet';
 import BN from 'bn.js';
 import { useState } from 'react';
 import { Button, Group, NumberInput, TextInput } from '@mantine/core';
@@ -38,8 +37,8 @@ const MatchAdmin: React.FC<{ index: number }> = ({ index }) => {
         entrypoint: 'set_match_teams_by_id',
         calldata: [
           index,
-          encodeShortString(homeMatchName),
-          encodeShortString(awayMatchName),
+          shortString.encodeShortString(homeMatchName),
+          shortString.encodeShortString(awayMatchName),
         ],
       },
     ],

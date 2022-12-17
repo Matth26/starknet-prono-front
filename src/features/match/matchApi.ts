@@ -1,5 +1,4 @@
 import BN from 'bn.js';
-import { decodeShortString } from 'starknet/dist/utils/shortString';
 import { createSC } from '../../tools/starknet';
 
 export type MatchApi = Match[];
