@@ -4,7 +4,7 @@ import MatchCard from './MatchCard';
 import { useAccount, useTransactionReceipt } from '@starknet-react/core';
 import { useAppSelector } from '../../hooks/reduxHooks';
 import { Box, Button, Text } from '@mantine/core';
-import { CONTRACT_ADDRESS } from '../../app/globals';
+import { SC_ADDRESS } from '../../app/globals';
 import { LoadingOverlay } from '@mantine/core';
 
 interface MatchListProps {
@@ -41,7 +41,7 @@ const MatchList = ({ type }: MatchListProps) => {
   } = useStarknetExecute({
     calls: [
       {
-        contractAddress: CONTRACT_ADDRESS,
+        contractAddress: SC_ADDRESS,
         entrypoint: 'set_match_bets',
         calldata: [
           [
@@ -97,7 +97,7 @@ const MatchList = ({ type }: MatchListProps) => {
             get_raw_prono();
             let txHash = await account?.execute(
               {
-                contractAddress: CONTRACT_ADDRESS,
+                contractAddress: SC_ADDRESS,
                 entrypoint: 'set_match_bets',
                 calldata: get_raw_prono(),
               },

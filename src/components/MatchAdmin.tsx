@@ -10,7 +10,7 @@ import { encodeShortString } from 'starknet/dist/utils/shortString';
 import BN from 'bn.js';
 import { useState } from 'react';
 import { Button, Group, NumberInput, TextInput } from '@mantine/core';
-import { CONTRACT_ADDRESS } from '../app/globals';
+import { SC_ADDRESS } from '../app/globals';
 
 export function feltToString(felt: BN) {
   if (felt.isZero()) return '';
@@ -21,7 +21,7 @@ export function feltToString(felt: BN) {
 const MatchAdmin: React.FC<{ index: number }> = ({ index }) => {
   const { contract } = useContract({
     abi: ContractAbi as Abi,
-    address: CONTRACT_ADDRESS,
+    address: SC_ADDRESS,
   });
   const [homeMatchName, setHomeMatchName] = useState('');
   const [awayMatchName, setAwayMatchName] = useState('');
@@ -35,7 +35,7 @@ const MatchAdmin: React.FC<{ index: number }> = ({ index }) => {
   } = useStarknetExecute({
     calls: [
       {
-        contractAddress: CONTRACT_ADDRESS,
+        contractAddress: SC_ADDRESS,
         entrypoint: 'set_match_teams_by_id',
         calldata: [
           index,

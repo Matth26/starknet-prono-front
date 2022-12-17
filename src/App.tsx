@@ -15,6 +15,7 @@ import PageLayout from './components/PageLayout';
 import AdminPage from './pages/AdminPage';
 import ResultPage from './pages/ResultPage';
 import StandingPage from './pages/StandingPage';
+import { getBaseURLFromEnv, getChainIDFromEnv } from './tools/starknet';
 
 function App() {
   /*const provider = new SequencerProvider({
@@ -23,12 +24,17 @@ function App() {
     gatewayUrl: 'http://localhost:5050',
     chainId: StarknetChainId.TESTNET,
   });*/
+  const baseUrl = getBaseURLFromEnv(import.meta.env.VITE_DAPP_ENV);
+  const feederGatewayUrl = getBaseURLFromEnv(import.meta.env.VITE_DAPP_ENV);
+  const gatewayUrl = getBaseURLFromEnv(import.meta.env.VITE_DAPP_ENV);
+  const chainId = getChainIDFromEnv(import.meta.env.VITE_DAPP_ENV);
+  console.log(baseUrl);
 
   const provider = new SequencerProvider({
-    baseUrl: 'https://goerli-2.voyager.online',
-    feederGatewayUrl: 'https://alpha4-2.starknet.io/feeder_gateway/',
-    gatewayUrl: 'https://alpha4-2.starknet.io/gateway/',
-    chainId: StarknetChainId.TESTNET2,
+    baseUrl,
+    feederGatewayUrl,
+    gatewayUrl,
+    chainId,
   });
 
   //const provider = new SequencerProvider({ network: 'goerli-alpha-2' });
