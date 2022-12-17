@@ -31,6 +31,7 @@
     "@esbuild-plugins/node-modules-polyfill": "^0.1.4",
     "@types/bn.js": "^5.1.1",
     "@types/luxon": "^3.1.0",
+    "@types/minimalistic-assert": "^1.0.1",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.0.1",
