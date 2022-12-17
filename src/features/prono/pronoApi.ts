@@ -5,8 +5,8 @@ export type PronoApi = Bet[];
 
 export interface Bet {
   match_id: number;
-  score_ht: number;
-  score_at: number;
+  home_score: number;
+  away_score: number;
 }
 
 const getProno = async (address: string): Promise<PronoApi> => {
@@ -14,14 +14,16 @@ const getProno = async (address: string): Promise<PronoApi> => {
   try {
     const ret = await sc.call('get_user_bets', [address]);
     console.log(ret);
-    return ret.bets.map((p: any, i: number) => {
-      if (!(p.has_been_bet as BN).isZero())
-        return {
-          match_id: i,
-          home_score: (p.score_ht as BN).toNumber(),
-          away_score: (p.score_at as BN).toNumber(),
-        };
-    });
+    return ret.bets
+      .map((p: any, i: number) => {
+        if (!(p.has_been_bet as BN).isZero())
+          return {
+            match_id: i,
+            home_score: (p.score_ht as BN).toNumber(),
+            away_score: (p.score_at as BN).toNumber(),
+          };
+      })
+      .filter((e: any) => e != undefined);
   } catch (error) {
     console.log(error);
   }

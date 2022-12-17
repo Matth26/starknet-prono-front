@@ -49,16 +49,13 @@ const PageLayout = () => {
               <Text>PRONO</Text>
               <Group>
                 <Button onClick={() => navigate('/')} variant="subtle">
-                  HOME
+                  MY BETS
                 </Button>
                 <Button onClick={() => navigate('/result')} variant="subtle">
-                  Result
+                  RESULTS
                 </Button>
                 <Button onClick={() => navigate('/standings')} variant="subtle">
-                  Standings
-                </Button>
-                <Button onClick={() => navigate('/admin')} variant="subtle">
-                  ADMIN
+                  STANDINGS
                 </Button>
               </Group>
               <Login />

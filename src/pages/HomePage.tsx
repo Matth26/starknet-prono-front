@@ -9,32 +9,32 @@ import { getPoints } from '../features/point/pointSlice';
 
 const HomePage = () => {
   const dispatch = useAppDispatch();
-  const { account } = useAccount();
+  const { account, address } = useAccount();
 
   // --------------------------------------------------------------------------------
-  /*const { matches, matchStatus } = useAppSelector((state) => state.match);
+  const { matches, matchStatus } = useAppSelector((state) => state.match);
 
   useEffect(() => {
     if (matchStatus === 'idle') dispatch(getMatches());
   }, [dispatch, matchStatus]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     console.log('matches', matches);
   }, [matches]);*/
 
   // --------------------------------------------------------------------------------
-  /*const { pronos, pronoStatus } = useAppSelector((state) => state.prono);
+  const { pronos, pronoStatus } = useAppSelector((state) => state.prono);
 
   useEffect(() => {
-    if (pronoStatus === 'idle')
+    if (pronoStatus === 'idle' && address)
       dispatch(
         getUserProno(
           '0x30254f3ad7fd02550e0ab23c3515be3d3c8f95e6973022e1e8f036f9179fb08'
         )
       );
-  }, [dispatch, pronoStatus]);
+  }, [dispatch, pronoStatus, address]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     console.log('pronos', pronos);
   }, [pronos]);*/
 

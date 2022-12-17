@@ -8,12 +8,18 @@ interface Result {
   points: number;
 }
 
+export function feltToString(felt: BN) {
+  if (felt.isZero()) return '';
+  const newStrB = Buffer.from(felt.toString(16), 'hex');
+  return newStrB.toString();
+}
+
 const fetchScoreBoard = async (): Promise<ScoreBoardApi> => {
   const sc = createSC();
   try {
     const ret = await sc.call('get_scoreboard');
     return ret.scores.map((s: any) => ({
-      address: (s.address as BN).toString(),
+      address: '0x' + (s.address as BN).toString(16),
       points: (s.points as BN).toNumber(),
     }));
   } catch (error) {

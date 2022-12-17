@@ -43,10 +43,50 @@ import ContractAbi from '../../assets/abis/prono.json';
 import { DateTime } from 'luxon';
 import { encodeShortString } from 'starknet/dist/utils/shortString';
 import { feltToString } from '../MatchAdmin';
-import { Button, NumberInput, TextInput } from '@mantine/core';
+import { Box, Button, NumberInput, Text, TextInput } from '@mantine/core';
 import { BETA } from 'starknet/constants';
 import BN from 'bn.js';
 import { CONTRACT_ADDRESS } from '../../app/globals';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import {
+  addPronoToSave,
+  setScoreHasChanged,
+} from '../../features/prono/pronoSlice';
+
+const dict: { [id: string]: IFlag } = {
+  France: { image: France },
+  Qatar: { image: Qatar },
+  Ecuador: { image: Ecuador },
+  England: { image: England },
+  Iran: { image: Iran },
+  Senegal: { image: Senegal },
+  Netherlands: { image: Netherlands },
+  USA: { image: USA },
+  Wales: { image: Wales },
+  Argentina: { image: Argentina },
+  SaudiArabia: { image: SaudiArabia },
+  Denmark: { image: Denmark },
+  Tunisia: { image: Tunisia },
+  Mexico: { image: Mexico },
+  Poland: { image: Poland },
+  Australia: { image: Australia },
+  Morocco: { image: Morocco },
+  Croatia: { image: Croatia },
+  Germany: { image: Germany },
+  Japan: { image: Japan },
+  Spain: { image: Spain },
+  CostaRica: { image: CostaRica },
+  Belgium: { image: Belgium },
+  Canada: { image: Canada },
+  Switzerland: { image: Switzerland },
+  Cameroon: { image: Cameroon },
+  Uruguay: { image: Uruguay },
+  SouthKorea: { image: SouthKorea },
+  Portugal: { image: Portugal },
+  Ghana: { image: Ghana },
+  Brazil: { image: Brazil },
+  Serbia: { image: Serbia },
+};
 
 interface Bet {
   match_id: number;
@@ -54,10 +94,97 @@ interface Bet {
   at_score: number;
 }
 
-const MatchCard: React.FC<{ index: number; type: string }> = ({
-  index,
+interface MatchInfoProp {
+  id: number;
+  type: 'prono' | 'result';
+  homeTeam: string;
+  awayTeam: string;
+  dateUtc: number;
+}
+
+interface IFlag {
+  image: string;
+}
+
+const MatchCard: React.FC<MatchInfoProp> = ({
+  id,
   type,
+  homeTeam,
+  awayTeam,
+  dateUtc,
 }) => {
+  const dispatch = useAppDispatch();
+
+  const [homeTeamScore, setHomeTeamScore] = useState<number | ''>('');
+  const [awayTeamScore, setAwayTeamScore] = useState<number | ''>('');
+
+  const { pronos, pronoStatus } = useAppSelector((state) => state.prono);
+  useEffect(() => {
+    if (type === 'prono' && pronoStatus === 'succeeded') {
+      const i = pronos.findIndex((p) => p.match_id === id);
+      if (i !== -1) {
+        setHomeTeamScore(pronos[i].home_score);
+        setAwayTeamScore(pronos[i].away_score);
+      }
+    }
+  }, [id, pronos, pronoStatus, type]);
+
+  const [pointForMatch, setPointForMatch] = useState(-1);
+  const { points, pointStatus } = useAppSelector((state) => state.point);
+  useEffect(() => {
+    if (type === 'result' && pointStatus === 'succeeded') {
+      const i = points.findIndex((p) => p.match_id === id);
+      if (i !== -1) {
+        setPointForMatch(points[i].points);
+      }
+    }
+  }, [id, points, pointStatus, type, pointForMatch]);
+
+  const displayPoint = () => {
+    /*let bgColor;
+		if (pointForMatch === 3) bgColor = '#2cba00';
+		else if (pointForMatch === 2) bgColor = '#a3ff00';
+		else if (pointForMatch === 1) bgColor = '#fff400';
+		else bgColor = '#ffa700';*/
+    if (pointForMatch === -1) return null;
+
+    return (
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '4px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          display: 'flex',
+          backgroundColor: '#a3ff00',
+          borderRadius: '30px',
+          paddingTop: '3px',
+          paddingLeft: '12px',
+          paddingRight: '12px',
+          paddingBottom: '1px',
+          fontWeight: 'bold',
+          zIndex: 10,
+          fontSize: '16px',
+        }}
+      >
+        <span
+          style={{ marginTop: '0px', marginLeft: '1px', marginRight: '6px' }}
+        >
+          {pointForMatch}
+        </span>
+        <span>points</span>
+      </Box>
+    );
+  };
+
+  const { matches, matchStatus } = useAppSelector((state) => state.match);
+  useEffect(() => {
+    if (type === 'result' && matchStatus === 'succeeded') {
+      setHomeTeamScore(matches[id].score_ht);
+      setAwayTeamScore(matches[id].score_at);
+    }
+  }, [id, matchStatus, matches, type]);
+
   const dict: { [id: string]: IFlag } = {
     France: { image: France },
     Qatar: { image: Qatar },
@@ -93,119 +220,17 @@ const MatchCard: React.FC<{ index: number; type: string }> = ({
     Serbia: { image: Serbia },
   };
 
-  const [HomeTeamScore, setHomeTeamScore] = useState<number | undefined>();
-  const [AwayTeamScore, setAwayTeamScore] = useState<number | undefined>();
-  const [HomeTeam, setHomeTeam] = useState<string | ''>('');
-  const [AwayTeam, setAwayTeam] = useState<string | ''>('');
-  const [dateUtc, setdateUtc] = useState<number>(0);
-  const [pointForMatch, setPointForMatch] = useState(-1);
-
-  const { address } = useAccount();
-
-  const [prono, setProno] = useState<Bet | null>(null);
-  const [pronosToSave, setpronosToSave] = useState<Bet | null>(null);
-  const [scoreHasChanged, setscoreHasChanged] = useState<Boolean>(false);
-
-  let homeTeamFlag;
+  let HomeTeamFlag;
   let AwayTeamFlag;
-  const { contract } = useContract({
-    abi: ContractAbi as Abi,
-    address: CONTRACT_ADDRESS,
-  });
 
-  const {
-    data: matchdata,
-    loading: isNameLoading,
-    error: nameError,
-    refresh: refreshName,
-  } = useStarknetCall({
-    contract,
-    method: 'get_match_data_by_id',
-    args: [index],
-    options: { watch: false },
-  });
-
-  // if (address === undefined) {
-  //     return null;
-
-  // }
-
-  const { data: pronodata } = useStarknetCall({
-    contract,
-    method: 'get_user_bet_by_id',
-    args: [address ? address : 0, index],
-    options: { watch: false },
-  });
-
-  useEffect(() => {
-    if (matchdata) {
-      setHomeTeam(feltToString(matchdata[1]));
-      setAwayTeam(feltToString(matchdata[2]));
-      setdateUtc(matchdata[0].toNumber());
+  for (const key in dict) {
+    if (homeTeam && homeTeam.replace(' ', '') === key) {
+      HomeTeamFlag = dict[key].image;
     }
-  }, [matchdata]);
-
-  useEffect(() => {
-    if (pronodata === null && prono) {
-      setscoreHasChanged(true);
-    }
-    if (pronodata && prono) {
-      if (pronodata[0] != prono?.ht_score) {
-        setscoreHasChanged(true);
-      } else if (pronodata[1] != prono?.at_score) {
-        setscoreHasChanged(true);
-      }
-    }
-
-    //setProno()
-  }, [pronodata, prono]);
-
-  useEffect(() => {
-    if (pronodata && pronodata[0] && pronodata[1] && pronodata[2]) {
-      let hasbeenbet = pronodata[0] as BN;
-      if (hasbeenbet) {
-        let ht_score = pronodata[1] as BN;
-        let at_score = pronodata[2] as BN;
-        console.log(ht_score);
-        console.log(at_score);
-        setProno({
-          match_id: index,
-          ht_score: ht_score.toNumber(),
-          at_score: at_score.toNumber(),
-        });
-      }
-    }
-    console.log('prono    ' + prono + 'index:' + index);
-  }, [pronodata]);
-
-  for (let key in dict) {
-    if (HomeTeam && HomeTeam.replace(' ', '') === key) {
-      homeTeamFlag = dict[key].image;
-    }
-    if (AwayTeam && AwayTeam.replace(' ', '') === key) {
+    if (awayTeam && awayTeam.replace(' ', '') === key) {
       AwayTeamFlag = dict[key].image;
     }
   }
-
-  const canBet = () => {
-    if (Date.now() >= dateUtc * 1000) return false;
-    return true;
-  };
-
-  const { execute: executeSetMatchBetById } = useStarknetExecute({
-    calls: [
-      {
-        contractAddress: CONTRACT_ADDRESS,
-        entrypoint: 'set_match_bet_by_id',
-        calldata: [index, HomeTeamScore, AwayTeamScore],
-      },
-    ],
-  });
-  const displayDate = () => {
-    return DateTime.fromSeconds(dateUtc).toLocaleString(
-      DateTime.DATETIME_SHORT
-    );
-  };
 
   const displayRound = (matchId: number) => {
     if (matchId <= 7) return 'Round of 16';
@@ -215,40 +240,24 @@ const MatchCard: React.FC<{ index: number; type: string }> = ({
     return 'Final';
   };
 
-  const displayPoint = () => {
-    if (pointForMatch === -1) return null;
-
-    return (
-      <div
-        style={{
-          position: 'absolute',
-          top: '4px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          display: 'flex',
-          backgroundColor: '#a3ff00',
-          borderRadius: '30px',
-          paddingTop: '3px',
-          paddingLeft: '12px',
-          paddingRight: '12px',
-          paddingBottom: '1px',
-          fontWeight: 'bold',
-          zIndex: 10,
-          fontSize: '16px',
-        }}
-      >
-        <span
-          style={{ marginTop: '0px', marginLeft: '1px', marginRight: '6px' }}
-        >
-          {pointForMatch}
-        </span>
-        <span>points</span>
-      </div>
-    );
+  const displayDate = () => {
+    return DateTime.fromSeconds(dateUtc).toLocaleString(
+      DateTime.DATETIME_SHORT
+    ); // DATETIME_LONG
   };
+
+  const canBet = () => {
+    //console.log(Date.now());
+    //console.log(dateUtc);
+    if (Date.now() >= dateUtc * 1000) return false;
+    return true;
+  };
+
+  if (type === 'result' && !matches[id].is_score_set) return null;
+
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         margin: '1rem 0 0 0',
         padding: '0.5rem 0.5rem 0.5rem 0.5rem',
         position: 'relative',
@@ -257,148 +266,108 @@ const MatchCard: React.FC<{ index: number; type: string }> = ({
       }}
       className="match-card"
     >
-      {!canBet() && <div className="locked-bet"></div>}
+      {!canBet() && <Box className="locked-bet"></Box>}
       <div className="match-info">
-        <span
-          style={{
-            fontSize: '14px',
+        <Text
+          sx={{
+            fontSize: '16px',
           }}
           className="date-in-card"
         >
           {displayDate()}
-        </span>
+        </Text>
         {type === 'result' && <div>{displayPoint()}</div>}
-        <span
-          style={{
-            fontSize: '14px',
+        <Text
+          sx={{
+            fontSize: '16px',
           }}
           className="date-in-card"
         >
-          {displayRound(index)}
-        </span>
+          {displayRound(id)}
+        </Text>
       </div>
       <div className="match-team-and-score">
         <div className="country">
-          <img
-            src={homeTeamFlag}
-            className={homeTeamFlag !== undefined ? 'flag' : 'unknown-flag'}
-          ></img>
+          <img src={HomeTeamFlag} className={'flag'}></img>
           <div style={{ width: '10px' }}></div>
-          <p className="country-name"> {HomeTeam}</p>
+          <p className="country-name"> {homeTeam}</p>
         </div>
 
         <div className="score">
           {type === 'prono' ? (
-            <NumberInput
+            <TextInput
               id="outlined-basic"
-              defaultValue={0}
-              hideControls={true}
               className="scorefield"
-              value={HomeTeamScore}
-              onChange={(val) => {
-                let newHTScore = HomeTeamScore;
-                let newATScore = AwayTeamScore;
-                if (!val) newHTScore = 0;
-                else newHTScore = val;
-                if (!newATScore) newATScore = 0;
-                let bet = {
-                  match_id: index,
-                  ht_score: newHTScore,
-                  at_score: newATScore,
-                };
+              value={homeTeamScore}
+              onChange={(e) => {
+                let newHTScore = homeTeamScore;
+                let newATScore = awayTeamScore;
+                if (isNaN(parseInt(e.target.value))) newHTScore = 0;
+                else newHTScore = parseInt(e.target.value, 10);
+                if (newATScore === '') newATScore = 0;
+
                 setHomeTeamScore(newHTScore);
                 setAwayTeamScore(newATScore);
-                setProno(bet);
+
+                dispatch(
+                  addPronoToSave({
+                    match_id: id,
+                    home_score: newHTScore,
+                    away_score: newATScore,
+                  })
+                );
+                dispatch(setScoreHasChanged());
               }}
             />
           ) : (
             <div style={{ margin: 'auto', color: 'black' }}>
-              {HomeTeamScore}
+              {homeTeamScore}
             </div>
           )}
 
+          {/* <p className='text-in-card'> 0 </p> */}
           <p className="middle-score"> - </p>
-
+          {/* <p className='text-in-card'> 0 </p> */}
           {type === 'prono' ? (
-            <NumberInput
+            <TextInput
               id="outlined-basic"
-              style={{ padding: 'auto' }}
-              defaultValue={0}
-              hideControls={true}
               className="scorefield"
-              //inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-              value={AwayTeamScore}
-              onChange={(val) => {
-                let newHTScore = HomeTeamScore;
-                let newATScore = AwayTeamScore;
-                if (!val) newHTScore = 0;
-                else newHTScore = val;
-                if (!val) newATScore = 0;
-                else newATScore = val;
-                if (!newHTScore) newHTScore = 0;
+              value={awayTeamScore}
+              onChange={(e) => {
+                let newHTScore = homeTeamScore;
+                let newATScore = awayTeamScore;
+                if (isNaN(parseInt(e.target.value))) newATScore = 0;
+                else newATScore = parseInt(e.target.value, 10);
+                if (newHTScore === '') newHTScore = 0;
 
                 setHomeTeamScore(newHTScore);
                 setAwayTeamScore(newATScore);
+
+                dispatch(
+                  addPronoToSave({
+                    match_id: id,
+                    home_score: newHTScore,
+                    away_score: newATScore,
+                  })
+                );
+                dispatch(setScoreHasChanged());
               }}
             />
           ) : (
             <div style={{ margin: 'auto', color: 'black' }}>
-              {AwayTeamScore}
+              {awayTeamScore}
             </div>
           )}
         </div>
-        <div>
-          {type === 'result' && (
-            <div className="countryend">
-              <p className="country-name"> {AwayTeam} </p>
-              <div style={{ width: '10px' }}></div>
-              <img
-                src={AwayTeamFlag}
-                className={AwayTeamFlag !== undefined ? 'flag' : 'unknown-flag'}
-              ></img>
-            </div>
-          )}
+
+        <div className="country">
+          <p className="country-name"> {awayTeam} </p>
+          <div style={{ width: '10px' }}></div>
+          <img src={AwayTeamFlag} className={'flag'}></img>
         </div>
-        {type === 'prono' && (
-          <div className="buttonend">
-            <div className="countryend">
-              <p className="country-name"> {AwayTeam} </p>
-              <div style={{ width: '10px' }}></div>
-              <img
-                src={AwayTeamFlag}
-                className={AwayTeamFlag !== undefined ? 'flag' : 'unknown-flag'}
-              ></img>
-            </div>
-            <div className="button">
-              <Button
-                disabled={!scoreHasChanged}
-                sx={{
-                  color: 'black',
-                  backgroundColor: scoreHasChanged ? '#ffc300' : '#ececec',
-                  alignSelf: 'flex-end',
-                }}
-                onClick={() => {
-                  executeSetMatchBetById();
-                }}
-              >
-                Save
-              </Button>
-            </div>
-          </div>
-        )}
       </div>
-    </div>
+    </Box>
   );
 };
 
 export default MatchCard;
-
-interface MatchInfoProp {
-  HomeTeam: string;
-  AwayTeam: string;
-  DateUtc: string;
-}
-
-interface IFlag {
-  image: string;
-}
