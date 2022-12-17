@@ -1,5 +1,7 @@
+import { Dialog, Group, Text } from '@mantine/core';
 import { useAccount } from '@starknet-react/core';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import Login from '../components/Login';
 import MatchList from '../components/matchlist/MatchList';
 import { getMatches } from '../features/match/matchSlice';
 import { getUserProno } from '../features/prono/pronoSlice';
@@ -21,8 +23,13 @@ const HomePage = () => {
     if (pronoStatus === 'idle' && address) dispatch(getUserProno(address));
   }, [dispatch, pronoStatus, address]);
 
-  if (!account) return <div>Please connect</div>;
-  return <MatchList type="prono"></MatchList>;
+  if (!account)
+    return (
+      <Text sx={{ marginTop: '50px', fontSize: 16 }} ta="center">
+        Please connect your wallet
+      </Text>
+    );
+  return <MatchList type="prono" />;
 };
 
 export default HomePage;
