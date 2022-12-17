@@ -1,4 +1,4 @@
-import { Button, Group } from '@mantine/core';
+import { Group } from '@mantine/core';
 import { useAccount, useConnectors } from '@starknet-react/core';
 import Connectors from './Connectors';
 import { ActionIcon } from '@mantine/core';

@@ -1,17 +1,10 @@
 import './matchcard.css';
 import { useEffect, useState } from 'react';
 import MatchCard from './MatchCard';
-import {
-  useAccount,
-  useStarknetCall,
-  useStarknetExecute,
-  useTransactionReceipt,
-} from '@starknet-react/core';
+import { useAccount, useTransactionReceipt } from '@starknet-react/core';
 import { useAppSelector } from '../../hooks/reduxHooks';
 import { Box, Button, Text } from '@mantine/core';
 import { CONTRACT_ADDRESS } from '../../app/globals';
-import { toBN } from 'starknet/src/utils/number';
-import { has } from 'immer/dist/internal';
 import { LoadingOverlay } from '@mantine/core';
 
 interface MatchListProps {

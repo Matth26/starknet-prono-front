@@ -1,3 +1,13 @@
+import { useEffect, useState } from 'react';
+import { Box, Text, TextInput } from '@mantine/core';
+import { DateTime } from 'luxon';
+
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import {
+  addPronoToSave,
+  setScoreHasChanged,
+} from '../../features/prono/pronoSlice';
+
 import './matchcard.css';
 import France from '../../assets/flags/fr.svg';
 import Qatar from '../../assets/flags/qa.svg';
@@ -31,27 +41,6 @@ import Portugal from '../../assets/flags/pt.svg';
 import Ghana from '../../assets/flags/gh.svg';
 import Brazil from '../../assets/flags/br.svg';
 import Serbia from '../../assets/flags/rs.svg';
-import React, { useEffect, useState } from 'react';
-import {
-  useAccount,
-  useContract,
-  useStarknetCall,
-  useStarknetExecute,
-} from '@starknet-react/core';
-import { Abi, validateAndParseAddress } from 'starknet';
-import ContractAbi from '../../assets/abis/prono.json';
-import { DateTime } from 'luxon';
-import { encodeShortString } from 'starknet/dist/utils/shortString';
-import { feltToString } from '../MatchAdmin';
-import { Box, Button, NumberInput, Text, TextInput } from '@mantine/core';
-import { BETA } from 'starknet/constants';
-import BN from 'bn.js';
-import { CONTRACT_ADDRESS } from '../../app/globals';
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
-import {
-  addPronoToSave,
-  setScoreHasChanged,
-} from '../../features/prono/pronoSlice';
 
 const dict: { [id: string]: IFlag } = {
   France: { image: France },

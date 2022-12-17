@@ -1,14 +1,11 @@
 import {
   useContract,
-  useAccount,
   useStarknetCall,
   useStarknetExecute,
 } from '@starknet-react/core';
-import { hexToAscii } from 'web3-utils';
 
 import ContractAbi from '../assets/abis/prono.json';
 import { Abi } from 'starknet';
-import { BigNumberish, toFelt } from 'starknet/dist/utils/number';
 import { encodeShortString } from 'starknet/dist/utils/shortString';
 import BN from 'bn.js';
 import { useState } from 'react';

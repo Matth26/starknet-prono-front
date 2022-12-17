@@ -47,7 +47,6 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/standings" element={<StandingPage />} />
               <Route path="/result" element={<ResultPage />} />
-              <Route path="/admin" element={<AdminPage />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

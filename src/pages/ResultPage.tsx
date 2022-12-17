@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import MatchList from '../components/matchlist/MatchList';
 import { getMatches } from '../features/match/matchSlice';
 import { getPoints } from '../features/point/pointSlice';
-import { getUserProno } from '../features/prono/pronoSlice';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
 
 const ResultPage = () => {

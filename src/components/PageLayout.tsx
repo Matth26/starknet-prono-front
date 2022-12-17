@@ -1,13 +1,10 @@
 import {
   AppShell,
-  Aside,
   Burger,
   Button,
-  Footer,
   Group,
   Header,
   MediaQuery,
-  Navbar,
   Text,
   useMantineTheme,
 } from '@mantine/core';
@@ -47,7 +44,16 @@ const PageLayout = () => {
             </MediaQuery>
 
             <Group sx={{ width: '100%' }} position="apart">
-              <Text>PRONO</Text>
+              <Text
+                variant="gradient"
+                gradient={{ from: '#4DABF7', to: '#3BC9DB', deg: 45 }}
+                sx={{
+                  fontSize: 25,
+                  fontWeight: 'bold',
+                }}
+              >
+                StarkProno
+              </Text>
               <Group>
                 <Button onClick={() => navigate('/')} variant="subtle">
                   MY BETS
