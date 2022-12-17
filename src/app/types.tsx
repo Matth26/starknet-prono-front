@@ -1,4 +1,4 @@
-export type DappEnvType = 'testnet' | 'testnet2' | 'mainnet';
+export type DappEnvType = 'goerli-alpha' | 'goerli-alpha-2' | 'mainnet-alpha';
 
 export type BaseURLType =
   | 'https://goerli.voyager.online'

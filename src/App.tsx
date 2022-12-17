@@ -4,7 +4,6 @@ import {
   useConnectors,
 } from '@starknet-react/core';
 import { Container, MantineProvider } from '@mantine/core';
-import { StarknetChainId } from 'starknet/src/constants';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import { SequencerProvider } from 'starknet';
@@ -15,7 +14,7 @@ import PageLayout from './components/PageLayout';
 import AdminPage from './pages/AdminPage';
 import ResultPage from './pages/ResultPage';
 import StandingPage from './pages/StandingPage';
-import { getBaseURLFromEnv, getChainIDFromEnv } from './tools/starknet';
+import { getBaseURLFromEnv } from './tools/starknet';
 
 function App() {
   /*const provider = new SequencerProvider({
@@ -24,17 +23,9 @@ function App() {
     gatewayUrl: 'http://localhost:5050',
     chainId: StarknetChainId.TESTNET,
   });*/
-  const baseUrl = getBaseURLFromEnv(import.meta.env.VITE_DAPP_ENV);
-  const feederGatewayUrl = getBaseURLFromEnv(import.meta.env.VITE_DAPP_ENV);
-  const gatewayUrl = getBaseURLFromEnv(import.meta.env.VITE_DAPP_ENV);
-  const chainId = getChainIDFromEnv(import.meta.env.VITE_DAPP_ENV);
-  console.log(baseUrl);
 
   const provider = new SequencerProvider({
-    baseUrl,
-    feederGatewayUrl,
-    gatewayUrl,
-    chainId,
+    network: import.meta.env.VITE_DAPP_ENV,
   });
 
   //const provider = new SequencerProvider({ network: 'goerli-alpha-2' });

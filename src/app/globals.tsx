@@ -12,4 +12,4 @@ export const SC_ADDRESS: string =
 
 export const DAPP_ENV: DappEnvType = import.meta.env.VITE_DAPP_ENV
   ? import.meta.env.VITE_DAPP_ENV
-  : 'testnet';
+  : 'goerli-alpha-2';

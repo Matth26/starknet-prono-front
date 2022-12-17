@@ -104,7 +104,6 @@ const MatchList = ({ type }: MatchListProps) => {
               undefined,
               { maxFee: 500 }
             );
-            console.log(txHash);
             setTxFinished(false);
             setVisible(true);
             if (txHash) setHash(txHash.transaction_hash as string);

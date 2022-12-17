@@ -13,7 +13,6 @@ const getProno = async (address: string): Promise<PronoApi> => {
   const sc = createSC();
   try {
     const ret = await sc.call('get_user_bets', [address]);
-    console.log(ret);
     return ret.bets
       .map((p: any, i: number) => {
         if (!(p.has_been_bet as BN).isZero())

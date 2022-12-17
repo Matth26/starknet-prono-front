@@ -3,10 +3,9 @@ import {
   useStarknetCall,
   useStarknetExecute,
 } from '@starknet-react/core';
-
+import { encodeShortString } from 'starknet/src/utils/shortString';
 import ContractAbi from '../assets/abis/prono.json';
 import { Abi } from 'starknet';
-import { encodeShortString } from 'starknet/dist/utils/shortString';
 import BN from 'bn.js';
 import { useState } from 'react';
 import { Button, Group, NumberInput, TextInput } from '@mantine/core';
@@ -46,7 +45,6 @@ const MatchAdmin: React.FC<{ index: number }> = ({ index }) => {
     ],
   });
 
-  console.log(contract);
   const {
     data: name,
     loading: isNameLoading,

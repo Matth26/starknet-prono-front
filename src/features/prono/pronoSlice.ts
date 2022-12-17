@@ -58,7 +58,6 @@ export const pronoSlice = createSlice({
       state.scoreHasChanged = false;
     },
     setScoreHasChanged: (state) => {
-      console.log('setScoreHasChanged');
       state.scoreHasChanged = true;
     },
   },
